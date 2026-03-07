@@ -31,4 +31,4 @@ function searchDictionary(dictionaryIndex, keyword, maxResults = 10) {
 }
 
 module.exports = { indexJsonDictionaries, searchDictionary };
-module.exports = { indexTextFiles, searchKeyword };
+module.exports = { indexJsonDictionaries, searchDictionary };
