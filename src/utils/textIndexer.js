@@ -2,27 +2,33 @@
 const fs = require('fs');
 const path = require('path');
 
-function indexTextFiles(txtDir) {
-    const files = fs.readdirSync(txtDir).filter(f => f.endsWith('.txt'));
-    const textIndex = {};
+
+function indexJsonDictionaries(jsonDir) {
+    const files = fs.readdirSync(jsonDir).filter(f => f.endsWith('.json'));
+    const dictionaryIndex = {};
     for (const file of files) {
-        const filePath = path.join(txtDir, file);
-        textIndex[file] = fs.readFileSync(filePath, 'utf8');
+        const filePath = path.join(jsonDir, file);
+        const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (content.dictionary && Array.isArray(content.dictionary)) {
+            dictionaryIndex[file] = content.dictionary;
+        }
     }
-    return textIndex;
+    return dictionaryIndex;
 }
 
-function searchKeyword(textIndex, keyword, snippetRadius = 40, maxResults = 10) {
+
+function searchDictionary(dictionaryIndex, keyword, maxResults = 10) {
     const results = [];
-    for (const [file, text] of Object.entries(textIndex)) {
-        let idx = text.toLowerCase().indexOf(keyword.toLowerCase());
-        while (idx !== -1 && results.length < maxResults) {
-            const snippet = text.substring(Math.max(0, idx - snippetRadius), idx + keyword.length + snippetRadius).replace(/\n/g, ' ');
-            results.push({ file, snippet });
-            idx = text.toLowerCase().indexOf(keyword.toLowerCase(), idx + keyword.length);
+    for (const [file, dictionary] of Object.entries(dictionaryIndex)) {
+        for (const entry of dictionary) {
+            if (entry.word && entry.word.toLowerCase().includes(keyword.toLowerCase())) {
+                results.push({ file, word: entry.word, definition: entry.definition });
+                if (results.length >= maxResults) break;
+            }
         }
     }
     return results;
 }
 
+module.exports = { indexJsonDictionaries, searchDictionary };
 module.exports = { indexTextFiles, searchKeyword };
