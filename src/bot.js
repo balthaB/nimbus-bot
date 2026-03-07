@@ -16,6 +16,9 @@ client.on('ready', () => {
 
 
 function startBot() {
+  // Initialize the dictionary index for rule search
+  searchRules.indexJsonDictionaries();
+
   client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
   });
@@ -60,11 +63,11 @@ function startBot() {
         message.reply(SEARCH_USAGE);
         return;
       }
-      const results = searchRules.searchKeyword(args[0]);
+      const results = searchRules.searchDictionary(args[0]);
       if (results.length === 0) {
         message.reply(`No results found for "${args[0]}"`);
       } else {
-        const reply = results.map(r => `**${r.file}** (Page ${r.page}): ...${r.snippet}...`).join('\n');
+        const reply = results.map(r => `**${r.word}**: ${r.definition}`).join('\n');
         message.reply(`Found ${results.length} result(s) for "${args[0]}":\n${reply}`);
       }
     }

@@ -2,27 +2,43 @@
 const fs = require('fs');
 const path = require('path');
 
-function indexTextFiles(txtDir) {
-    const files = fs.readdirSync(txtDir).filter(f => f.endsWith('.txt'));
-    const textIndex = {};
-    for (const file of files) {
-        const filePath = path.join(txtDir, file);
-        textIndex[file] = fs.readFileSync(filePath, 'utf8');
-    }
-    return textIndex;
-}
 
-function searchKeyword(textIndex, keyword, snippetRadius = 40, maxResults = 10) {
-    const results = [];
-    for (const [file, text] of Object.entries(textIndex)) {
-        let idx = text.toLowerCase().indexOf(keyword.toLowerCase());
-        while (idx !== -1 && results.length < maxResults) {
-            const snippet = text.substring(Math.max(0, idx - snippetRadius), idx + keyword.length + snippetRadius).replace(/\n/g, ' ');
-            results.push({ file, snippet });
-            idx = text.toLowerCase().indexOf(keyword.toLowerCase(), idx + keyword.length);
+function indexJsonDictionaries(jsonDir) {
+    const files = fs.readdirSync(jsonDir).filter(f => f.endsWith('.json'));
+    const dictionaryIndex = {};
+    for (const file of files) {
+        const filePath = path.join(jsonDir, file);
+        const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (content.dictionary && Array.isArray(content.dictionary)) {
+            console.log(`[indexJsonDictionaries] Loaded file: ${filePath}, entries: ${content.dictionary.length}`);
+            dictionaryIndex[file] = content.dictionary;
+        } else {
+            console.log(`[indexJsonDictionaries] File ${filePath} missing 'dictionary' array.`);
         }
     }
+    return dictionaryIndex;
+}
+
+
+function searchDictionary(dictionaryIndex, keyword, maxResults = 10) {
+    const results = [];
+    const lowerKeyword = keyword.toLowerCase();
+    console.log(`[searchDictionary] Searching for keyword: '${keyword}'`);
+    for (const [file, dictionary] of Object.entries(dictionaryIndex)) {
+        console.log(`[searchDictionary] Searching in file: ${file}, entries: ${dictionary.length}`);
+        for (const entry of dictionary) {
+            if (
+                (entry.word && entry.word.toLowerCase().includes(lowerKeyword)) ||
+                (entry.definition && entry.definition.toLowerCase().includes(lowerKeyword))
+            ) {
+                results.push({ file, word: entry.word, definition: entry.definition });
+                if (results.length >= maxResults) break;
+            }
+        }
+    }
+    console.log(`[searchDictionary] Results found: ${results.length}`);
     return results;
 }
 
-module.exports = { indexTextFiles, searchKeyword };
+module.exports = { indexJsonDictionaries, searchDictionary };
+module.exports = { indexJsonDictionaries, searchDictionary };
