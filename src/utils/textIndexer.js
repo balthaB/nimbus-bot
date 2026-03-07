@@ -10,7 +10,10 @@ function indexJsonDictionaries(jsonDir) {
         const filePath = path.join(jsonDir, file);
         const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         if (content.dictionary && Array.isArray(content.dictionary)) {
+            console.log(`[indexJsonDictionaries] Loaded file: ${filePath}, entries: ${content.dictionary.length}`);
             dictionaryIndex[file] = content.dictionary;
+        } else {
+            console.log(`[indexJsonDictionaries] File ${filePath} missing 'dictionary' array.`);
         }
     }
     return dictionaryIndex;
@@ -19,14 +22,21 @@ function indexJsonDictionaries(jsonDir) {
 
 function searchDictionary(dictionaryIndex, keyword, maxResults = 10) {
     const results = [];
+    const lowerKeyword = keyword.toLowerCase();
+    console.log(`[searchDictionary] Searching for keyword: '${keyword}'`);
     for (const [file, dictionary] of Object.entries(dictionaryIndex)) {
+        console.log(`[searchDictionary] Searching in file: ${file}, entries: ${dictionary.length}`);
         for (const entry of dictionary) {
-            if (entry.word && entry.word.toLowerCase().includes(keyword.toLowerCase())) {
+            if (
+                (entry.word && entry.word.toLowerCase().includes(lowerKeyword)) ||
+                (entry.definition && entry.definition.toLowerCase().includes(lowerKeyword))
+            ) {
                 results.push({ file, word: entry.word, definition: entry.definition });
                 if (results.length >= maxResults) break;
             }
         }
     }
+    console.log(`[searchDictionary] Results found: ${results.length}`);
     return results;
 }
 
