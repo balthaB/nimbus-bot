@@ -31,6 +31,27 @@ function startBot() {
       const command = message.content.split(' ')[0].toLowerCase();
       console.log(`Parsed command: '${command}', args: ${args}`);
 
+      // Generate and send character sheet PDF command
+      if (command === '!read') {
+        if (!args[0]) {
+          message.reply('Usage: !read <characterName>');
+          return;
+        }
+        const characterName = args[0];
+        const { characterSheetToPDF } = require('./commands/characterSheetToPDF');
+        characterSheetToPDF(characterName, (err, pdfPath) => {
+          if (err) {
+            message.reply(`Error generating PDF: ${err.message}`);
+            return;
+          }
+          message.reply({ content: `PDF for '${characterName}' generated.`, files: [pdfPath] });
+        });
+      }
+      console.log(`Received message: '${message.content}' from ${message.author.tag} in #${message.channel.name}`);
+      if (message.author.bot) return;
+      if (!message.content || message.content.trim() === '') return;
+      // ...existing code...
+
       // Dice rolling command
       if (command === COMMANDS.ROLL) {
         if (!args[0]) {
@@ -93,6 +114,35 @@ function startBot() {
           message.reply(`Character sheet for '${characterName}' stored successfully at ${filePath}`);
         } catch (err) {
           message.reply(`Error storing character sheet: ${err.message}`);
+        }
+      }
+
+      // Retrieve character sheet info command
+      if (command === '!character') {
+        if (!args[0]) {
+          message.reply('Usage: !character <characterName>');
+          return;
+        }
+        const characterName = args[0];
+        const safeName = characterName.replace(/[^a-zA-Z0-9_-]/g, '_');
+        const filePath = require('path').join(__dirname, '..', 'character_sheets', `${safeName}.json`);
+        const fs = require('fs');
+        if (!fs.existsSync(filePath)) {
+          message.reply(`No character sheet found for '${characterName}'.`);
+          return;
+        }
+        try {
+          const sheet = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          const info = sheet.character_sheet;
+          let reply = `**Character Name:** ${info.basic_details.character_name}\n`;
+          reply += `**Ancestry:** ${info.basic_details.ancestry}\n`;
+          reply += `**Class:** ${info.basic_details.class}\n`;
+          reply += `**Level:** ${info.basic_details.level}\n`;
+          reply += `**HP:** ${info.hit_points.current}/${info.hit_points.max}\n`;
+          reply += `**Wounds:** ${info.wounds.current}/${info.wounds.max}`;
+          message.reply(reply);
+        } catch (err) {
+          message.reply(`Error reading character sheet: ${err.message}`);
         }
       }
     });
