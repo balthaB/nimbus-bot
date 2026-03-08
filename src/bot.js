@@ -24,27 +24,28 @@ function startBot() {
   });
 
     client.on('messageCreate', async message => {
-            // Fetch and send character sheet JSON command
-            if (command === COMMANDS.FETCH) {
-              if (!args[0]) {
-                message.reply(USAGE.FETCH);
-                return;
-              }
-              const characterName = args[0];
-              const { fetchCharacterSheet } = require('./commands/fetchSheet');
-              try {
-                const jsonPath = fetchCharacterSheet(characterName);
-                message.reply({ content: `JSON for '${characterName}' fetched.`, files: [jsonPath] });
-              } catch (err) {
-                message.reply(`Error fetching JSON: ${err.message}`);
-              }
-            }
       console.log(`Received message: '${message.content}' from ${message.author.tag} in #${message.channel.name}`);
       if (message.author.bot) return;
       if (!message.content || message.content.trim() === '') return;
       const args = message.content.split(' ').slice(1);
       const command = message.content.split(' ')[0].toLowerCase();
       console.log(`Parsed command: '${command}', args: ${args}`);
+
+      // Fetch and send character sheet JSON command
+      if (command === COMMANDS.FETCH) {
+        if (!args[0]) {
+          message.reply(USAGE.FETCH);
+          return;
+        }
+        const characterName = args[0];
+        const { fetchCharacterSheet } = require('./commands/fetchSheet');
+        try {
+          const jsonPath = fetchCharacterSheet(characterName);
+          message.reply({ content: `JSON for '${characterName}' fetched.`, files: [jsonPath] });
+        } catch (err) {
+          message.reply(`Error fetching JSON: ${err.message}`);
+        }
+      }
 
       // Generate and send character sheet PDF command
       if (command === '!read') {
