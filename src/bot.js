@@ -274,7 +274,8 @@ function startBot() {
         try {
           const result = initiative(characterName);
           message.reply(
-            `Initiative for '${characterName}':\nRoll: ${result.rolls[0]}\nDexterity Modifier: ${result.modifier}\nTotal Initiative: ${result.total}`);
+            `Initiative for '${characterName}':\nRoll: ${result.initiativeRoll.rolls}\nTotal Initiative: ${result.initiativeRoll.total}
+            \n${result.actions} action(s) to start with.`);
         } catch (err)  {
           message.reply(`Error rolling initiative: ${err.message}`);
         }

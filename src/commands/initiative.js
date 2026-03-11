@@ -1,6 +1,11 @@
 /**
  * Rolls initiative for character (1d20 + dexterity).
+ * A single digit means the player starts with one action, a double digits
+ * means two actions and 20+ or a natural 20 means they start with all three actions.
+ * 
  * Usage: !initiative [characterName] 
+ * 
+ * Returns the initiative roll for the character and the number of actions they start with.
  */
 
 const { roll } = require('./rollDice');
@@ -14,10 +19,18 @@ function initiative(characterName) {
     const sheetJSON = JSON.parse(sheetData);
     const sheet = sheetJSON.character_sheet;
 
-    const dexterity = sheet.stats.dexterity.value;
-    const initiativeRoll = roll('1d20+' + dexterity);
+    const initiative = sheet.initiative;
+    const initiativeRoll = roll('1d20+' + initiative);
+    const initiativeTotal = initiativeRoll.total;
 
-    return initiativeRoll;
+    // Determine the number of actions according to the dice roll and the initiative modifier
+    // A natural 20 means the dice roll gave 20 without any modifiers
+    const actions = initiativeTotal > 20 || initiativeRoll.rolls[0] == 20 ? 3 : initiativeTotal >= 10 ? 2 : 1;
+
+    return {
+        initiativeRoll,
+        actions
+    }
 }
 
 module.exports = {
