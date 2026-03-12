@@ -290,6 +290,24 @@ function startBot() {
         break;
       }
 
+      case COMMANDS.INITIATIVE: {
+        if (args.length < 1) {
+          message.reply(USAGE.INITIATIVE);
+          return;
+        }
+        const characterName = args[0];
+        const { initiative } = require('./commands/initiative');
+        try {
+          const result = initiative(characterName);
+          message.reply(
+            `Initiative for '${characterName}':\nRoll: ${result.initiativeRoll.rolls}\nTotal Initiative: ${result.initiativeRoll.total}
+            \n${result.actions} action(s) to start with.`);
+        } catch (err)  {
+          message.reply(`Error rolling initiative: ${err.message}`);
+        }
+        break;
+      } 
+
       default:
         // Optionally handle unknown commands
         break;
