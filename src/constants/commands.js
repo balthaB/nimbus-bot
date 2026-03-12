@@ -11,6 +11,7 @@ const COMMANDS = {
   STORE: '!store',
   SET_STATS: '!setstats',
   MAX_HP: '!maxhp',
+  UPSKILL: "Usage: !upskill <characterName> <skillName>",
   INITIATIVE: '!initiative'
 };
 
@@ -30,5 +31,5 @@ const USAGE = {
 
 module.exports = {
   COMMANDS,
-  USAGE
+  USAGE,
 };
