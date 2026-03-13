@@ -11,7 +11,8 @@ const COMMANDS = {
   STORE: '!store',
   SET_STATS: '!setstats',
   MAX_HP: '!maxhp',
-  DAMAGE: '!damage'
+  DAMAGE: '!damage',
+  HEAL: '!heal'
 };
 
 const USAGE = {
@@ -25,7 +26,8 @@ const USAGE = {
   STORE: 'Usage: !store <characterName> <characterSheetJSON>',
   SET_STATS: 'Usage: !setstats <characterName> <stat> <value>',
   MAX_HP: 'Usage: !maxhp <characterName> <value>',
-  DAMAGE: 'Usage: !damage <characterName> <amount>'
+  DAMAGE: 'Usage: !damage <characterName> <amount>',
+  HEAL: 'Usage: !heal <characterName> <amount>'
 };
 
 module.exports = {

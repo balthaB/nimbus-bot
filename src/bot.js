@@ -289,6 +289,25 @@ function startBot() {
         break;
       }
 
+      case COMMANDS.HEAL: {
+        if (args.length < 2) {
+          message.reply(USAGE.HEAL);
+        }
+        const characterName = args[0];
+        const amount = parseInt(args[1]);
+        if (isNaN(amount)) {
+          message.reply("Amount must be a number.");
+          return;
+        }
+        const { heal } = require("./commands/heal");
+        try {
+          const newHP = heal(characterName, amount);
+          message.reply(`Healed '${characterName}' by ${amount}. New HP: ${newHP}`);
+        } catch (err) {
+          message.reply(`Error applying healing: ${err.message}`);
+        }
+      }
+
       default:
         // Optionally handle unknown commands
         break;
