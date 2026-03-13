@@ -264,6 +264,31 @@ function startBot() {
           break;
       }
 
+      case COMMANDS.DAMAGE: {
+        if (args.length < 2) {
+          message.reply(USAGE.DAMAGE);
+        }
+        const characterName = args[0];
+        const amount = parseInt(args[1]);
+        if (isNaN(amount)) {
+          message.reply("Amount mest be a number.");
+          return;
+        }
+        const { damage } = require("./commands/damage");
+        try {
+          const newHP = damage(characterName, amount);
+          if (newHP == -1) {
+            message.reply(`'${characterName}' is already in dying condition (0 HP), please use !wound instead.`);
+          }
+          else {
+            message.reply(`Damaged '${characterName}' by ${amount}. New HP: ${newHP}`);
+          }
+        } catch (err) {
+          message.reply(`Error applying damage: ${err.message}`);
+        }
+        break;
+      }
+
       default:
         // Optionally handle unknown commands
         break;
