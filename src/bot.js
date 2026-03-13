@@ -307,6 +307,34 @@ function startBot() {
           message.reply(`Error applying healing: ${err.message}`);
         }
       }
+      
+      case COMMANDS.WOUND: {
+        if (args.length < 2) {
+          message.reply(USAGE.WOUND);
+        }
+        const characterName = args[0];
+        const amount = parseInt(args[1]);
+        if (isNaN(amount)) {
+          message.reply("Amount must be a number.");
+          return;
+        }
+        const { wound } = require("./commands/wound");
+        try {
+          const newWounds = wound(characterName, amount);
+          if (newWounds == -1) {
+            message.reply(`'${characterName}' is already at max wounds (6), cannot be wounded further.`);
+          }
+          else {
+            message.reply(`Inflicted ${amount} wounds to '${characterName}'. New wound count: ${newWounds}`);
+            if (newWounds >= 6) {
+              message.reply(`'${characterName}' has suffered 6 wounds and is now dead.`);
+            }
+          }
+        } catch (err) {
+          message.reply(`Error applying wounds: ${err.message}`);
+        }
+        break;
+      }
 
       default:
         // Optionally handle unknown commands

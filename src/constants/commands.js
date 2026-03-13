@@ -12,7 +12,8 @@ const COMMANDS = {
   SET_STATS: '!setstats',
   MAX_HP: '!maxhp',
   DAMAGE: '!damage',
-  HEAL: '!heal'
+  HEAL: '!heal',
+  WOUND: '!wound'
 };
 
 const USAGE = {
@@ -27,7 +28,8 @@ const USAGE = {
   SET_STATS: 'Usage: !setstats <characterName> <stat> <value>',
   MAX_HP: 'Usage: !maxhp <characterName> <value>',
   DAMAGE: 'Usage: !damage <characterName> <amount>',
-  HEAL: 'Usage: !heal <characterName> <amount>'
+  HEAL: 'Usage: !heal <characterName> <amount>',
+  WOUND: 'Usage: !wound <characterName> <amount>'
 };
 
 module.exports = {
