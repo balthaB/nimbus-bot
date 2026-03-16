@@ -133,6 +133,8 @@ function startBot() {
           if (result.modifier !== 0)
             reply += ` ${result.modifier > 0 ? "+" : "-"} ${Math.abs(result.modifier)}`;
           reply += `\nTotal: ${result.total}`;
+          if (result.isCritSuccess) reply += `\n${require('./constants/dice').CRIT_SUCCESS_MSG}`;
+          if (result.isCritFailure) reply += `\n${require('./constants/dice').CRIT_FAILURE_MSG}`;
           message.reply(reply);
         } catch (err) {
           if (err.name && err.message)
@@ -177,6 +179,30 @@ function startBot() {
         } catch (err) {
           message.reply(`Error: ${err.message}`);
         }
+        break;
+      }
+      case COMMANDS.UPSKILL: {
+        if (!args[0] || !args[1]) {
+          message.reply("Usage: !upskill <characterName> <skillName>");
+          return;
+        }
+
+        const characterName = args[0];
+        const skillName = args[1].toLowerCase();
+
+        const { upskill } = require("./commands/upskill");
+
+        try {
+          const newValue = upskill(characterName, skillName);
+
+          message.reply(
+            `Skill '${skillName}' for '${characterName}' increased to ${newValue}.`,
+          );
+        } catch (err) {
+          message.reply(`Error: ${err.message}`);
+        }
+
+        break;
       }
       case COMMANDS.MAX_HP: {
         if (args.length < 2) {
@@ -186,10 +212,10 @@ function startBot() {
         const characterName = args[0];
         const value = parseInt(args[1]);
         if (isNaN(value)) {
-          message.reply('Value must be a number.');
+          message.reply("Value must be a number.");
           return;
         }
-        const { maxHP } = require('./commands/maxHP');
+        const { maxHP } = require("./commands/maxHP");
         try {
           const newMaxHP = maxHP(characterName, value);
           message.reply(`Updated max HP for '${characterName}' to ${value}`);
@@ -245,23 +271,25 @@ function startBot() {
         }
         break;
       }
-        
+
       case COMMANDS.SET_STATS: {
-          if (args.length < 3) {
-            message.reply(USAGE.SET_STATS);
-            return;
-          }
-          const characterName = args[0];
-          const stat = args[1];
-          const value = args[2];
-          const { setStats } = require('./commands/setStats');
-          try {
-            const newValue = setStats(characterName, stat, value);
-            message.reply(`Updated '${stat}' for '${characterName}' to ${newValue}.`);
-          } catch (err) {
-            message.reply(`Error updating stat: ${err.message}`);
-          }
-          break;
+        if (args.length < 3) {
+          message.reply(USAGE.SET_STATS);
+          return;
+        }
+        const characterName = args[0];
+        const stat = args[1];
+        const value = args[2];
+        const { setStats } = require("./commands/setStats");
+        try {
+          const newValue = setStats(characterName, stat, value);
+          message.reply(
+            `Updated '${stat}' for '${characterName}' to ${newValue}.`,
+          );
+        } catch (err) {
+          message.reply(`Error updating stat: ${err.message}`);
+        }
+        break;
       }
 
       case COMMANDS.DAMAGE: {
@@ -335,6 +363,26 @@ function startBot() {
         }
         break;
       }
+      case COMMANDS.INITIATIVE: {
+        if (args.length < 1) {
+          message.reply(USAGE.INITIATIVE);
+          return;
+        }
+        const characterName = args[0];
+        const { initiative } = require('./commands/initiative');
+        try {
+          const result = initiative(characterName);
+          let reply = `Initiative for '${characterName}':\nRoll: ${result.initiativeRoll.rolls}\nTotal Initiative: ${result.initiativeRoll.total}
+            \n${result.actions} action(s) to start with.`;
+          if (result.isCritSuccess) reply += `\n${require('./constants/dice').CRIT_SUCCESS_MSG}`;
+          if (result.isCritFailure) reply += `\n${require('./constants/dice').CRIT_FAILURE_MSG}`;
+          
+          message.reply(reply);
+        } catch (err)  {
+          message.reply(`Error rolling initiative: ${err.message}`);
+        }
+        break;
+      } 
 
       default:
         // Optionally handle unknown commands

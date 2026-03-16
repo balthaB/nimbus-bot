@@ -13,7 +13,9 @@ const COMMANDS = {
   MAX_HP: '!maxhp',
   DAMAGE: '!damage',
   HEAL: '!heal',
-  WOUND: '!wound'
+  WOUND: '!wound',
+  UPSKILL: "Usage: !upskill <characterName> <skillName>",
+  INITIATIVE: '!initiative'
 };
 
 const USAGE = {
@@ -29,10 +31,11 @@ const USAGE = {
   MAX_HP: 'Usage: !maxhp <characterName> <value>',
   DAMAGE: 'Usage: !damage <characterName> <amount>',
   HEAL: 'Usage: !heal <characterName> <amount>',
-  WOUND: 'Usage: !wound <characterName> <amount>'
+  WOUND: 'Usage: !wound <characterName> <amount>',
+  INITIATIVE: 'Usage: !initiative <characterName>'
 };
 
 module.exports = {
   COMMANDS,
-  USAGE
+  USAGE,
 };
