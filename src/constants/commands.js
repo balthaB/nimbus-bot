@@ -15,7 +15,8 @@ const COMMANDS = {
   HEAL: '!heal',
   WOUND: '!wound',
   UPSKILL: "Usage: !upskill <characterName> <skillName>",
-  INITIATIVE: '!initiative'
+  INITIATIVE: '!initiative',
+  ALLSPELLS: '!allspells'
 };
 
 const USAGE = {
@@ -29,6 +30,8 @@ const USAGE = {
   STORE: 'Usage: !store <characterName> <characterSheetJSON>',
   SET_STATS: 'Usage: !setstats <characterName> <stat> <value>',
   MAX_HP: 'Usage: !maxhp <characterName> <value>',
+  INITIATIVE: 'Usage: !initiative <characterName>',
+  ALLSPELLS: 'Usage: !allspells',
   DAMAGE: 'Usage: !damage <characterName> <amount>',
   HEAL: 'Usage: !heal <characterName> <amount>',
   WOUND: 'Usage: !wound <characterName> <amount>',
