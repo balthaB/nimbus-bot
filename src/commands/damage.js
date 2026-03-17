@@ -31,7 +31,9 @@ function damage(characterName, amount) {
         let newHP = currentHP - amount;
         if (newHP <= 0) {
             newHP = 0;
-            //TODO: Mark character as DYING
+            if (!sheet.conditions.includes('dying')) {
+                sheet.conditions.push('dying');
+            }
         }
         sheet.hit_points.current = newHP;
 

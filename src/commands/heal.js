@@ -1,5 +1,5 @@
 /**
- * !heal command: Heals a player for a chosen (strictly poritive) amount, if player is DYING (0hp) remove the status
+ * !heal command: Heals a player for a chosen (strictly poritive) amount, if player is DYING (0hp) remove the condition
  * Usage: !heal <characterName> <amount>
  */
 
@@ -18,19 +18,24 @@ function heal(characterName, amount) {
     
     const currentHP = sheet.hit_points.current;
     const maxHP = sheet.hit_points.max;
+    if (!sheet.conditions.includes('dead')) {
+        if (sheet.conditions.includes('dying')) {
+            sheet.conditions = sheet.conditions.filter(condition => condition !== 'dying');
+        }
+        let newHP = currentHP + amount;
+        if (newHP > maxHP) {
+            newHP = maxHP;
+        }
+        sheet.hit_points.current = newHP;   
 
-    if (currentHP === 0 && amount > 0) {
-        //TODO: Remove DYING status
+        storeCharacterSheet(characterName, sheetJSON);
+
+        return newHP;
     }
-    let newHP = currentHP + amount;
-    if (newHP > maxHP) {
-        newHP = maxHP;
+    else {
+        return -1; // Character is dead, cannot be healed
     }
-    sheet.hit_points.current = newHP;
-
-    storeCharacterSheet(characterName, sheetJSON);
-
-    return newHP;
+    
 }
 
 module.exports = {

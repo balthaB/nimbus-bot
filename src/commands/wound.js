@@ -23,7 +23,11 @@ function wound(characterName, amount) {
         let newWounds = currentWounds + amount;
         if (newWounds > 6) {
             newWounds = 6;
-            //TODO: Mark character as dead
+            // Mark character as dead if wounds reach 6 and not already marked as dead and is dying
+            if (!sheet.conditions.includes('dead') && sheet.conditions.includes('dying')) {
+                sheet.conditions = sheet.conditions.filter(condition => condition !== 'dying');
+                sheet.conditions.push('dead');
+            }
         }
         sheet.wounds.current = newWounds;
 

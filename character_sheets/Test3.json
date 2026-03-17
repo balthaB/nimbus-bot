@@ -29,12 +29,12 @@
     },
     "hit_points": {
       "current": 0,
-      "max": 20,
+      "max": 5,
       "temp_hp": 0
     },
     "wounds": {
       "current": 0,
-      "max": 0
+      "max": 6
     },
     "armor": 0,
     "initiative": 0,
