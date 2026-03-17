@@ -311,6 +311,9 @@ function startBot() {
           }
           else {
             message.reply(`Damaged '${characterName}' by ${amount}. New HP: ${newHP}`);
+            if (newHP === 0) {
+              message.reply(`'${characterName}' has reached 0 HP and is now in dying condition.`);
+            }
           }
         } catch (err) {
           message.reply(`Error applying damage: ${err.message}`);
@@ -335,6 +338,7 @@ function startBot() {
         } catch (err) {
           message.reply(`Error applying healing: ${err.message}`);
         }
+        break;
       }
       
       case COMMANDS.WOUND: {
