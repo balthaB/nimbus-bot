@@ -33,7 +33,7 @@
       "temp_hp": 0
     },
     "wounds": {
-      "current": 6,
+      "current": 0,
       "max": 6
     },
     "armor": 0,
@@ -89,8 +89,6 @@
     "languages": [],
     "abilities": [],
     "notes": "",
-    "conditions": [
-      "dead"
-    ]
+    "conditions": []
   }
 }
