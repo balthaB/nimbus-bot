@@ -334,7 +334,11 @@ function startBot() {
         const { heal } = require("./commands/heal");
         try {
           const newHP = heal(characterName, amount);
-          message.reply(`Healed '${characterName}' by ${amount}. New HP: ${newHP}`);
+          if (newHP == -1) {
+            message.reply(`'${characterName}' is dead and cannot be healed.`); 
+          } else {
+              message.reply(`Healed '${characterName}' by ${amount}. New HP: ${newHP}`);
+          }
         } catch (err) {
           message.reply(`Error applying healing: ${err.message}`);
         }
