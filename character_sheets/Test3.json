@@ -18,7 +18,7 @@
       "dexterity": {
         "value": 2,
         "save": "neutral",
-        "key_stat": "normal"
+        "key_stat": "advantage"
       },
       "intelligence": {
         "value": 0,
@@ -28,7 +28,7 @@
       "will": {
         "value": -1,
         "save": "neutral",
-        "key_stat": "normal"
+        "key_stat": "disadvantage"
       }
     },
     "hit_points": {

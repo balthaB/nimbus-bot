@@ -22,7 +22,8 @@ const COMMANDS = {
   ADD_SPELL: '!addspell',
   MY_SPELLS: '!myspells',
   REMOVE_SPELL: '!removespell',
-  SET_STAT_ADV: '!setstatadv'
+  SET_STAT_ADV: '!setstatadv',
+  SET_STAT_DIS: '!setstatdis'
 };
 
 const USAGE = {
@@ -48,7 +49,8 @@ const USAGE = {
   INITIATIVE: 'Usage: !initiative <characterName>',
   MY_SPELLS: 'Usage: !myspells <characterName>',
   REMOVE_SPELL: 'Usage: !removespell [characterName] [spellName]',
-  SET_STAT_ADV: 'Usage: !setstatadv <characterName> <statName>'
+  SET_STAT_ADV: 'Usage: !setstatadv <characterName> <statName>',
+  SET_STAT_DIS: 'Usage: !setstatdis <characterName> <statName>'
 };
 
 module.exports = {
