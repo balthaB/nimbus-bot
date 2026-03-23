@@ -12,19 +12,23 @@
     "stats": {
       "strength": {
         "value": 0,
-        "save": "neutral"
+        "save": "neutral",
+        "key_stat": "normal"
       },
       "dexterity": {
         "value": 0,
-        "save": "neutral"
+        "save": "neutral",
+        "key_stat": "normal"
       },
       "intelligence": {
         "value": 0,
-        "save": "neutral"
+        "save": "neutral",
+        "key_stat": "normal"
       },
       "will": {
         "value": 0,
-        "save": "neutral"
+        "save": "neutral",
+        "key_stat": "normal"
       }
     },
     "hit_points": {
