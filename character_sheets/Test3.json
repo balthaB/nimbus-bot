@@ -24,7 +24,7 @@
       },
       "will": {
         "value": -1,
-        "save": "neutral"
+        "save": "advantage"
       }
     },
     "hit_points": {

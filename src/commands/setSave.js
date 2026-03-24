@@ -7,7 +7,7 @@ const { storeCharacterSheet } = require('./storeSheet');
 const fs = require('fs');
 
 // advantageType should be either 'advantage' or 'disadvantage'
-function setKeyStat(characterName, statName, advantageType) {
+function setSave(characterName, statName, advantageType) {
     // fetchCharacterSheet returns the file path
     const filePath = fetchCharacterSheet(characterName);
     
@@ -19,10 +19,10 @@ function setKeyStat(characterName, statName, advantageType) {
     // Set the given stat to advantage, only one stat can be advantage at a time
     for (const stat in sheet.stats) {
         if (stat === statName) {
-            sheet.stats[stat].key_stat = advantageType;
+            sheet.stats[stat].save = advantageType;
         } else {
-            if (sheet.stats[stat].key_stat === advantageType) {
-                sheet.stats[stat].key_stat = 'normal';
+            if (sheet.stats[stat].save === advantageType) {
+                sheet.stats[stat].save = 'neutral';
             }
         }
     }
@@ -33,5 +33,5 @@ function setKeyStat(characterName, statName, advantageType) {
 }
 
 module.exports = {
-    setKeyStat
+    setSave
 }

@@ -473,12 +473,12 @@ function startBot() {
         }
         const characterName = args[0];
         const statName = args[1].toLowerCase();
-        const { setKeyStat } = require("./commands/setKeyStat");
+        const { setSave } = require("./commands/setSave");
         try {
-          const updatedStats = setKeyStat(characterName, statName, "advantage");
+          const updatedStats = setSave(characterName, statName, "advantage"); 
           message.reply(
             `Updated stat advantage for '${characterName}'. Current stats:\n${Object.entries(updatedStats)
-              .map(([stat, details]) => `- ${stat}: ${details.value} (${details.key_stat})`)
+              .map(([stat, details]) => `- ${stat}: ${details.value} (${details.save})`)
               .join("\n")}`,
           )
         } catch (err) {
@@ -494,12 +494,12 @@ function startBot() {
         }
         const characterName = args[0];
         const statName = args[1].toLowerCase();
-        const { setKeyStat } = require("./commands/setKeyStat");
+        const { setSave } = require("./commands/setSave");
         try {
-          const updatedStats = setKeyStat(characterName, statName, "disadvantage");
+          const updatedStats = setSave(characterName, statName, "disadvantage");
           message.reply(
             `Updated stat disadvantage for '${characterName}'. Current stats:\n${Object.entries(updatedStats)
-              .map(([stat, details]) => `- ${stat}: ${details.value} (${details.key_stat})`)
+              .map(([stat, details]) => `- ${stat}: ${details.value} (${details.save})`)
               .join("\n")}`,
           )
         } catch (err) {
